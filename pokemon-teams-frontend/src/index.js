@@ -6,8 +6,6 @@ const POKEMONS_URL = `${BASE_URL}/pokemons`
 document.addEventListener('DOMContentLoaded', function(event) {
     let main = document.getElementsByTagName('main')[0]
     
-    
-    
     fetch(TRAINERS_URL)
     .then(response => response.json())
     .then(data => {
@@ -21,11 +19,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
             trainerName.innerText = trainer.name
             trainerName.className = 'trainer'
             addPokemonButton.dataset.trainer_id = trainer.id
+            addPokemonButton.className = 'add-button'
             addPokemonButton.innerText = "Add Pokemon"
             trainer.pokemons.forEach(pokemon => {
                 let pokeLi = document.createElement('li')
-                let pokeReleaseButton = document.createElement('button')
                 pokeLi.innerText = `${pokemon.species} (${pokemon.nickname})` 
+                let pokeReleaseButton = document.createElement('button')
                 pokeReleaseButton.className = 'release'
                 pokeReleaseButton.dataset.pokemon_id = pokemon.id
                 pokeReleaseButton.innerText = "Release"
@@ -37,5 +36,30 @@ document.addEventListener('DOMContentLoaded', function(event) {
         })
     })
         
+    main.addEventListener('click', function(event) {
+        if (event.target.className === 'add-button' && event.target.parentNode.querySelector('ul').childNodes.length < 6) {
+            fetch(POKEMONS_URL)
+            .then(response => response.json())
+            .then(data => {
+                let pokeUl = event.target.parentNode.querySelector('ul')
+                let newPokeLi = document.createElement('li')
+                let newPokemon = data[Math.floor(Math.random() * 24)]
+                newPokeLi.innerText = `${newPokemon.species} (${newPokemon.nickname})`
+                let pokeReleaseButton = document.createElement('button')
+                pokeReleaseButton.className = 'release'
+                pokeReleaseButton.dataset.pokemon_id = newPokemon.id
+                pokeReleaseButton.innerText = "Release"
+                newPokeLi.appendChild(pokeReleaseButton)
+                pokeUl.append(newPokeLi)
+            })
+        }
+    })
+
+    main.addEventListener('click', function(event) {
+        if (event.target.className === 'release') {
+            event.target.parentNode.remove()
+        }
+    })
+
     
 })
