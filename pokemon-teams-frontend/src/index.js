@@ -38,7 +38,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
         
     main.addEventListener('click', function(event) {
         if (event.target.className === 'add-button' && event.target.parentNode.querySelector('ul').childNodes.length < 6) {
-            fetch(POKEMONS_URL)
+            fetch(POKEMONS_URL, {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    console.log('hey')
+                })
+            })
             .then(response => response.json())
             .then(data => {
                 let pokeUl = event.target.parentNode.querySelector('ul')
