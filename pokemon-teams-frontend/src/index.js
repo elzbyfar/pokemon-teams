@@ -38,21 +38,22 @@ document.addEventListener('DOMContentLoaded', function(event) {
         
     main.addEventListener('click', function(event) {
         if (event.target.className === 'add-button' && event.target.parentNode.querySelector('ul').childNodes.length < 6) {
-            fetch(POKEMONS_URL, {
+            let pokemonId = Math.floor(Math.random() * 24)
+            fetch(`http://localhost:3000/pokemons/${pokemonId}`, {
                 method: 'POST', 
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    console.log('hey')
+                body: JSON.stringify( {
+                    'trainer_id': event.target.dataset.trainer_id
                 })
             })
             .then(response => response.json())
             .then(data => {
                 let pokeUl = event.target.parentNode.querySelector('ul')
                 let newPokeLi = document.createElement('li')
-                let newPokemon = data[Math.floor(Math.random() * 24)]
+                let newPokemon = data[pokemonId]
                 newPokeLi.innerText = `${newPokemon.species} (${newPokemon.nickname})`
                 let pokeReleaseButton = document.createElement('button')
                 pokeReleaseButton.className = 'release'

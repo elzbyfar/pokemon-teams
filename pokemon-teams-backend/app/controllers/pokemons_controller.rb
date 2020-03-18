@@ -5,6 +5,10 @@ class PokemonsController < ApplicationController
     pokemons = Pokemon.all 
     render json: pokemons
   end 
+  def show 
+    pokemon = Pokemon.find_by(id: params[:id]) 
+    render json: pokemon
+  end 
 
 
   def create
